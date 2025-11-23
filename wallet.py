@@ -22,7 +22,7 @@ class Wallet:
     """
     dct_id = {}  # словарь[self.id_obj] = self
     
-    def __init__(self, first_name, last_name):
+    def __init__(self, first_name, last_name, currency='USD'):
         """Инициализация экземпляра класса
 
         args:
@@ -31,7 +31,7 @@ class Wallet:
         """
         self.first_name = first_name
         self.last_name = last_name
-        self.currency = 'USD' # Валюта
+        self.currency = currency # Валюта
         while True:  # генерирование уникального id объекта
             temp = random.randint(1, 1_000_001)
             if temp not in Wallet.dct_id:
@@ -40,19 +40,22 @@ class Wallet:
                 break
         self.amount = 0.0  # Количество денег
 
-    def add_amount(self, number):
+    def add_amount(self, number: float):
         """Пополнение средств
 
         args:
             number (float): денежные средства в USD
 
         returns:
-            _type_: self
+            _type_: self | False
         """
+        if number <= 0:
+            print("Сумма пополнения должна быть положительной")
+            return False
         self.amount += number
         return self
 
-    def withdraw_money(self, number):
+    def withdraw_money(self, number: float):
         """Списание средств
 
         args:
@@ -61,48 +64,62 @@ class Wallet:
         returns:
             _type_: self | False
         """
-        if number <= self.amount:
-            self.amount -= number
-            return self
-        else:
+        if number <= 0:
+            print("Сумма списания должна быть положительной")
             return False
+        if number > self.amount:
+            print("Недостаточно средств на балансе")
+            return False
+        self.amount -= number
+        return self
         
-    def send_money(self, number, id_send):
+        
+    def send_money(self, number: float, id_send: int):
         """Переслать деньги с кошелька на кошелек
 
         args:
-            number float): денежны(е средства в USD
+            number (float): денежные средства в USD
             id_send (int): id_obj экземпляра класса
 
         returns:
             _type_: self | False
         """
-        if number <= self.amount:
-            self.amount -= number
-            Wallet.dct_id[id_send].add_amount(number)
-            return self
-        else:
+        if self.currency != Wallet.dct_id[id_send].currency:
+            print("Нельзя перевести между кошельками с разной валютой")
             return False
-        
+        if number <= 0:
+            print("Сумма списания должна быть положительной")
+            return False
+        if number > self.amount:
+            print("Недостаточно средств на балансе")
+            return False
+        self.amount -= number
+        Wallet.dct_id[id_send].add_amount(number)
+        return self
+
     def __add__(self, number):
-        """Пополнение средств
+        """Пополнение средств через оператор "+"
 
         args:
-            number float): денежны(е средства в USD
+            number (float): денежные средства в USD
         returns:
             _type_: self | False
         """
+        if not isinstance(number, (int, float)):
+            return NotImplemented
         return self.add_amount(number)
     
     def __sub__(self, number):
-        """Списание средств
+        """Списание средств через оператор "-"
 
         Args:
-            number float): денежны(е средства в USD
+            number (float): денежные средства в USD
 
         Returns:
             _type_: self | False
         """
+        if not isinstance(number, (int, float)):
+            return NotImplemented
         return self.withdraw_money(number)
     
     def __str__(self):
@@ -112,6 +129,16 @@ class Wallet:
 
 
 
+w1 = Wallet('Bob', 'Dillan').add_amount(2000)
+w2 = Wallet('Jon', 'Harris').add_amount(3000)
 
+# w1 + 1500
+# w2 + 700
+# print(w1.amount)
+# print(w2.amount)
+# print()
+# w1.send_money(400, w2.id_obj)
+# print(w1.amount)
+# print(w2.amount)
 
 
