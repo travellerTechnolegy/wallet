@@ -1,3 +1,16 @@
+"""Модуль для создания экземпляров кошельков и операций с ними
+
+Функции:
+    __init__(): инициализация кошелька;
+    add_amount(): пополнение средств в кошельке;
+    withdraw_money(): списание средств с кошелька;
+    send_money(): переслать деньги с кошелька на другой кошелек;
+    __add__(): пополнение средств в кошельке через оператор "+";
+    __sub__(): списание средств с кошелька через оператор "-";
+    __str__(): строковое представление экземпляра класса Wallet
+"""
+
+
 import random
 
 
@@ -10,8 +23,14 @@ class Wallet:
     dct_id = {}  # словарь[self.id_obj] = self
     
     def __init__(self, first_name, last_name):
-        self.first_name = first_name  # Имя
-        self.last_name = last_name  # Фамилия
+        """Инициализация экземпляра класса
+
+        args:
+            first_name (str): имя
+            last_name (str): фамилия
+        """
+        self.first_name = first_name
+        self.last_name = last_name
         self.currency = 'USD' # Валюта
         while True:  # генерирование уникального id объекта
             temp = random.randint(1, 1_000_001)
@@ -25,7 +44,7 @@ class Wallet:
         """Пополнение средств
 
         args:
-            number (_type_): float
+            number (float): денежные средства в USD
 
         returns:
             _type_: self
@@ -37,7 +56,7 @@ class Wallet:
         """Списание средств
 
         args:
-            number (_type_): float
+            number (float): денежные средства в USD
 
         returns:
             _type_: self | False
@@ -52,8 +71,8 @@ class Wallet:
         """Переслать деньги с кошелька на кошелек
 
         args:
-            number (_type_): float
-            id_send (_type_): int
+            number float): денежны(е средства в USD
+            id_send (int): id_obj экземпляра класса
 
         returns:
             _type_: self | False
@@ -69,8 +88,7 @@ class Wallet:
         """Пополнение средств
 
         args:
-            number (_type_): float
-
+            number float): денежны(е средства в USD
         returns:
             _type_: self | False
         """
@@ -80,7 +98,7 @@ class Wallet:
         """Списание средств
 
         Args:
-            number (_type_): float
+            number float): денежны(е средства в USD
 
         Returns:
             _type_: self | False
