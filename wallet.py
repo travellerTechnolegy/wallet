@@ -129,16 +129,7 @@ class Wallet:
 
 
 
-w1 = Wallet('Bob', 'Dillan').add_amount(2000)
-w2 = Wallet('Jon', 'Harris').add_amount(3000)
 
-# w1 + 1500
-# w2 + 700
-# print(w1.amount)
-# print(w2.amount)
-# print()
-# w1.send_money(400, w2.id_obj)
-# print(w1.amount)
-# print(w2.amount)
+
 
 
